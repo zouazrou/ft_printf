@@ -1,0 +1,194 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
+#include <unistd.h>
+#include <stddef.h>
+size_t    ft_strlen(const char *s)
+{
+    size_t    len;
+
+    len = 0;
+    while (s[len])
+        len++;
+    return (len);
+}
+static void    ft_len(char const *s1, char const *s2, size_t *lens1, size_t *lens2)
+{
+    *lens1 = ft_strlen(s1);
+    *lens2 = ft_strlen(s2);
+}
+
+char    *ft_strjoin(char const *s1, char const *s2)
+{
+    size_t    i;
+    size_t    lens1;
+    size_t    lens2;
+    char    *p;
+
+    if (!s1 || !s2)
+        return (NULL);
+    ft_len(s1, s2, &lens1, &lens2);
+    p = malloc(lens1 + lens2 + 1);
+    if (p == NULL)
+        return (NULL);
+    i = 0;
+    while (i < lens1)
+    {
+        p[i] = s1[i];
+        i++;
+    }
+    i = 0;
+    while (i < lens2)
+    {
+        p[i + lens1] = s2[i];
+        i++;
+    }
+    p[i + lens1] = '\0';
+    return (p);
+}
+size_t    ft_countnbr(long nb)
+{
+    size_t    len;
+
+    len = 0;
+    if (nb < 0)
+    {
+        nb *= -1;
+        len++;
+    }
+    if (!nb)
+        return (1);
+    while (nb)
+    {
+        nb /= 10;
+        len++;
+    }
+    return (len);
+}
+char	*ft_itoa(long n)
+{
+	char	*p;
+	size_t	lennb;
+
+	lennb = ft_countnbr(n);
+	p = malloc(lennb + 1);
+	if (p == NULL)
+		return (NULL);
+	if (n < 0)
+	{
+		p[0] = '-';
+		n *= -1;
+	}
+	p[lennb] = '\0';
+    if (!n)
+        p[--lennb] = n % 10 + 48;
+    else
+    {
+        while (n > 0)
+        {
+            p[--lennb] = n % 10 + 48;
+            n /= 10;
+        }
+    }
+	return (p);
+}
+char    *ft_char(int c)
+{
+    char    *d;
+
+    d = malloc(2);
+    if (!d)
+        return (NULL);
+    d[0] = c;
+    d[1] = '\0';
+    return (d);
+}
+char	*ft_decimal(int n)
+{
+	return (ft_itoa(n));
+}
+char	*ft_str(char *s)
+{
+	char	*d;
+	size_t	i;
+	d = malloc(ft_strlen(s) + 1);
+	if (!d)
+		return (NULL);
+	i = 0;
+	while (*s)
+		d[i++] = *s++;
+	d[i] = '\0';
+	return (d);
+}
+
+size_t  ft_chrlen(char *format)
+{
+    size_t  len;
+
+    len = 0;
+    while (format[len] && format[len] != '%')
+        len++;
+    return (len);
+}
+char    *ft_chrdup(char *format, size_t len)
+{
+    char    *p;
+    size_t  i;
+    
+    i = 0;
+    p = malloc(len + 1);
+    if (!p)
+        return (NULL);
+    while (len--)
+    {
+        p[i] = *format;
+        i++;
+        format++;
+    }
+    p[i] = '\0';
+    return (p);
+}
+
+char    *ft_strformat(char *format, va_list args)
+{
+    if (*format == 'c')
+        return (ft_char(va_arg(args, int)));
+    if (*format == 's')
+        return (ft_str(va_arg(args, char *)));
+    if (*format == 'd')
+        return (ft_decimal(va_arg(args, int)));
+    return (NULL);
+}
+int ft_printf(const char *format, ...)
+{
+    va_list args;
+    char    *buffer;
+    char    *temp;
+    char    *strf;
+    size_t  len;
+    
+
+    va_start(args, format);
+    while (*format)
+    {
+        len = ft_chrlen((char *)format);
+        buffer = ft_chrdup((char *)format, len);
+        strf = ft_strformat((char *)format + len + 1, args);
+        temp = ft_strjoin(buffer, strf);
+        free(buffer);
+        free(strf);
+        buffer = temp;
+        //free(temp);
+        format += (len + 2);
+    }
+    va_end(args);
+    return (0);
+}
+
+int    main(void)
+{
+    char    str[] = "Hello i'm %s i student in %d\n";
+
+    ft_printf(str, "zakaria", 1337);
+    return (0);
+}
