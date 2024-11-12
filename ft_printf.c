@@ -1,6 +1,6 @@
 #include "libftprintf.h"
 
-size_t  ft_chrlen(char *format)
+size_t  ft_chrlen(char *format) // nn
 {
     size_t  len;
 
@@ -9,7 +9,7 @@ size_t  ft_chrlen(char *format)
         len++;
     return (len);
 }
-char    *ft_chrdup(char *format, size_t len)
+char    *ft_chrdup(char *format, size_t len) // n
 {
     char    *p;
     size_t  i;
@@ -27,16 +27,7 @@ char    *ft_chrdup(char *format, size_t len)
     p[i] = '\0';
     return (p);
 }
-char    *ft_strformat(char format, va_list args)
-{
-    if (format == 'c')
-        return (ft_char(va_arg(args, int)));
-    if (format == 's')
-        return (ft_str(va_arg(args, char *)));
-    if (format == 'd')
-        return (ft_decimal(va_arg(args, int)));
-    return (NULL);
-}
+
 char	*ft_strdup(const char *s)
 {
 	char	*p;
@@ -53,6 +44,13 @@ char	*ft_strdup(const char *s)
 	}
 	return (p);
 }
+void    ft_update_buffer(char **buffer, char **temp, char **str) // n
+{
+    *temp = ft_strjoin(*buffer, *str);
+    free(*buffer);
+    free(*str);
+    *buffer = *temp;
+}
 int ft_printf(const char *format, ...)
 {
     va_list args;
@@ -67,25 +65,17 @@ int ft_printf(const char *format, ...)
     va_start(args, format);
     while (format[i])
     {
-        // this for standard string
         if (format[i] != '%' && format[i])
         {
             len = ft_chrlen((char *)(format + i));
             str = ft_chrdup((char *)(format + i), len);
-            temp = ft_strjoin(buffer, str);
-            free(buffer);
-            free(str);
-            buffer = temp;
+            ft_update_buffer(&buffer, &temp, &str);
             i += len;
         }
-        // this for format
         if (format[i] == '%' && format[i])
         {
             str = ft_strformat(format[i + 1], args);
-            temp = ft_strjoin(buffer, str);
-            free(buffer);
-            free(str);
-            buffer = temp;
+            ft_update_buffer(&buffer, &temp, &str);
             i += 2;
         }
     }

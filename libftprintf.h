@@ -24,6 +24,8 @@ char	*ft_decimal(int n);
 char    *ft_integer(int nb);
 // %u : Prints an unsigned decimal (base 10) number
 char    *ft_unsignedint(int nb);
+// ft_strformat ...
+char    *ft_strformat(char format, va_list args);
 // my Printf !!
 int ft_printf(const char *format, ...);
 #endif
