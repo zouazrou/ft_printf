@@ -5,12 +5,14 @@
 #include <string.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include <stdio.h>
 #include <stddef.h>
 //          for calculate lenght of number or string
 size_t     ft_countnbr(long nb);
 char    *ft_itoa(long n);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
+void    ft_putstr(const char *str);
 //          for formats
 // %c : Prints a single character
 char    *ft_char(int c);

@@ -27,38 +27,69 @@ char    *ft_chrdup(char *format, size_t len)
     p[i] = '\0';
     return (p);
 }
-char    *ft_strformat(char *format, va_list args)
+char    *ft_strformat(char format, va_list args)
 {
-    if (*format == 'c')
+    if (format == 'c')
         return (ft_char(va_arg(args, int)));
-    if (*format == 's')
+    if (format == 's')
         return (ft_str(va_arg(args, char *)));
-    if (*format == 'd')
+    if (format == 'd')
         return (ft_decimal(va_arg(args, int)));
     return (NULL);
+}
+char	*ft_strdup(const char *s)
+{
+	char	*p;
+	size_t	i;
+
+	i = 0;
+	p = malloc((ft_strlen(s) + 1));
+	if (p == NULL)
+		return (p);
+	while (i < ft_strlen(s) + 1)
+	{
+		*(p + i) = s[i];
+		i++;
+	}
+	return (p);
 }
 int ft_printf(const char *format, ...)
 {
     va_list args;
     char    *buffer;
     char    *temp;
-    char    *strf;
+    char    *str;
+    size_t  i;
     size_t  len;
     
-
+    i = 0;
+    buffer = ft_strdup("");
     va_start(args, format);
-    while (*format)
+    while (format[i])
     {
-        len = ft_chrlen((char *)format);
-        buffer = ft_chrdup((char *)format, len);
-        strf = ft_strformat((char *)format + len + 1, args);
-        temp = ft_strjoin(buffer, strf);
-        free(buffer);
-        free(strf);
-        buffer = temp;
-        // free(temp);
-        format += (len + 2);
+        // this for standard string
+        if (format[i] != '%' && format[i])
+        {
+            len = ft_chrlen((char *)(format + i));
+            str = ft_chrdup((char *)(format + i), len);
+            temp = ft_strjoin(buffer, str);
+            free(buffer);
+            free(str);
+            buffer = temp;
+            i += len;
+        }
+        // this for format
+        if (format[i] == '%' && format[i])
+        {
+            str = ft_strformat(format[i + 1], args);
+            temp = ft_strjoin(buffer, str);
+            free(buffer);
+            free(str);
+            buffer = temp;
+            i += 2;
+        }
     }
     va_end(args);
-    return (0);
+    ft_putstr(buffer);
+    return (ft_strlen(buffer));
 }
