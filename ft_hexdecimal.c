@@ -1,41 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_hexdecimal.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 14:19:53 by zouazrou          #+#    #+#             */
-/*   Updated: 2024/11/14 14:17:01 by zouazrou         ###   ########.fr       */
+/*   Created: 2024/11/12 14:32:27 by zouazrou          #+#    #+#             */
+/*   Updated: 2024/11/15 14:38:15 by zouazrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*ft_itoa(long n)
+size_t	ft_counthex(unsigned int nb)
+{
+	size_t	len;
+
+	len = 0;
+	while (nb)
+	{
+		nb /= 16;
+		len++;
+	}
+	return (len);
+}
+
+void	ft_hexdecimal(unsigned int nb, char *base, size_t *lenp)
 {
 	char	*p;
-	size_t	lennb;
+	size_t	len;
 
-	lennb = ft_countnbr(n);
-	p = malloc(lennb + 1);
-	if (p == NULL)
-		return (NULL);
-	if (n < 0)
+	if (!nb)
 	{
-		p[0] = '-';
-		n *= -1;
+		write(1, "0", 1);
+		(*lenp) += 1;
+		return ;
 	}
-	p[lennb] = '\0';
-	if (!n)
-		p[--lennb] = n % 10 + 48;
-	else
+	len = ft_counthex(nb);
+	p = malloc(len + 1);
+	if (!p)
+		return ;
+	p[len] = '\0';
+	while (len--)
 	{
-		while (n > 0)
-		{
-			p[--lennb] = n % 10 + 48;
-			n /= 10;
-		}
+		p[len] = base[nb % 16];
+		nb /= 16;
 	}
-	return (p);
+	ft_putstr(p);
+	(*lenp) += ft_strlen(p);
+	free(p);
 }

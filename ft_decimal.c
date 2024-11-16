@@ -1,47 +1,23 @@
-#include "libftprintf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_decimal.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/12 14:20:01 by zouazrou          #+#    #+#             */
+/*   Updated: 2024/11/14 14:16:51 by zouazrou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// size_t	ft_countnbr(int	n)
-// {
-// 	size_t	len;
-// 	long	nb;
+#include "ft_printf.h"
 
-// 	len = 0;
-// 	nb = (long)n;
-// 	if (nb < 0)
-// 		nb *= -1;
-// 	if (nb >= 0 && nb < 9)
-// 		return (len + 1);
-// 	while (nb)
-// 	{
-// 		nb /= 10;
-// 		len++;
-// 	}
-// 	return (len);
-// }
-
-char	*ft_decimal(int n)
+void	ft_decimal(int n, size_t *len)
 {
-	// char	*d;
-	// long	nb;
-	// size_t	i;
+	char	*p;
 
-	// i = ft_countnbr(n);
-	// d = malloc(i + (n < 0) + 1);
-	// if (!d)
-	// 	return (NULL);
-	// nb = (long)n;
-	// d[i] = '\0';
-	// if (nb < 0)
-	// 	d[0] = '-';
-	// if (nb == 0)
-	// {
-	// 	d[0] = '0';
-	// 	return (d);
-	// }
-	// while (nb)
-	// {
-	// 	d[--i] = (nb % 10) + '0';
-	// 	nb /= 10;
-	// }
-	return (ft_itoa(n));
+	p = ft_itoa(n);
+	ft_putstr(p);
+	(*len) += ft_strlen(p);
+	free(p);
 }

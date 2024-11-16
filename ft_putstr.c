@@ -1,6 +1,18 @@
-#include "libftprintf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/12 14:19:36 by zouazrou          #+#    #+#             */
+/*   Updated: 2024/11/14 14:17:12 by zouazrou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void    ft_putstr(const char *str)
+#include "ft_printf.h"
+
+void	ft_putstr(const char *str)
 {
-    write(1, str, ft_strlen(str));
+	write(1, str, ft_strlen(str));
 }

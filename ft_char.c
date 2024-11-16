@@ -1,13 +1,19 @@
-#include "libftprintf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_char.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zouazrou <zouazrou@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/12 14:20:08 by zouazrou          #+#    #+#             */
+/*   Updated: 2024/11/14 14:16:40 by zouazrou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-char	*ft_char(int c)
+#include "ft_printf.h"
+
+void	ft_char(int c, size_t *len)
 {
-	char	*d;
-
-	d = malloc(2);
-	if (!d)
-		return (NULL);
-	d[0] = c;
-	d[1] = '\0';
-	return (d);
+	write(1, &c, 1);
+	(*len)++;
 }
